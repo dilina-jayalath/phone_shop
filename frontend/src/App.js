@@ -1,23 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Outlet,
+  createRoutesFromElements,
+  Route,
+  ScrollRestoration,
+} from "react-router-dom";
+
+import Header from "./components/home/Header/Header";
+import HeaderBottom from "./components/home/Header/HeaderBottom";
+import PageNotFound from "./pages/pageNotFount";
+import Home from "./pages/Home/Home";
+import FooterBottom from "./components/home/Footer/FooterBottom";
+import Footer from "./components/home/Footer/Footer";
+import SpecialCase from "./components/SpecialCase/SpecialCase";
+
+const Layout = () => {
+  return (
+    <div>
+      <Header />
+      <HeaderBottom />
+      <SpecialCase />
+      <ScrollRestoration />
+      <Outlet />
+      <Footer/>
+      <FooterBottom/>
+    </div>
+  );
+};
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route>
+      <Route path="/" element={<Layout />}> 
+        <Route index element={<Home />}></Route>
+        <Route path="*" element={<PageNotFound />} />
+    </Route>
+    </Route>
+  )
+);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="font-bodyFont">
+      <RouterProvider router={router} />
     </div>
   );
 }
