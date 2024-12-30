@@ -1,27 +1,30 @@
-import { configureStore } from "@reduxjs/toolkit";
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import orebiReducer from "./orebiSlice";
+// src/app/store.js
+import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers } from 'redux';
+import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import orebiReducer from './orebiSlice';
+import authReducer from './authSlice';
 
+// Combine reducers
+const rootReducer = combineReducers({
+  orebi: orebiReducer,
+  auth: authReducer,
+});
+
+// Persist configuration
 const persistConfig = {
-  key: "root",
+  key: 'root',
   version: 1,
   storage,
+  // whitelist: ['auth' , 'orebi'], // Specify which reducers to persist
 };
 
-const persistedReducer = persistReducer(persistConfig, orebiReducer);
+// Create persisted reducer
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: { orebiReducer: persistedReducer },
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -30,4 +33,4 @@ export const store = configureStore({
     }),
 });
 
-export let persistor = persistStore(store);
+export const persistor = persistStore(store);

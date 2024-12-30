@@ -50,8 +50,8 @@ const Product = (props) => {
           </ul>
         </div>
       </div>
-      <div className="max-w-80 py-6 flex flex-col gap-1 border-[1px] border-t-0 px-4"  onClick={handleProductDetails}>
-        <div className="flex items-center justify-between font-titleFont">
+      <div className="max-w-80 py-6 flex flex-col gap-1 border-[1px] border-t-0 px-4"  >
+        <div className="flex items-center justify-between font-titleFont" onClick={handleProductDetails}>
           <h2 className="text-lg text-primeColor font-bold">
             {props.productName}
           </h2>
