@@ -10,10 +10,14 @@ import {
 import Header from "./components/home/Header/Header";
 import HeaderBottom from "./components/home/Header/HeaderBottom";
 import PageNotFound from "./pages/pageNotFount";
-import Home from "./pages/Home/Home";
 import FooterBottom from "./components/home/Footer/FooterBottom";
 import Footer from "./components/home/Footer/Footer";
 import SpecialCase from "./components/SpecialCase/SpecialCase";
+
+import Home from "./pages/Home/Home";
+import SignIn from "./pages/Account/SignIn";
+import SignUp from "./pages/Account/SignUp";
+import Cart from "./pages/Cart/Cart";
 
 const Layout = () => {
   return (
@@ -33,6 +37,9 @@ const router = createBrowserRouter(
     <Route>
       <Route path="/" element={<Layout />}> 
         <Route index element={<Home />}></Route>
+        <Route path="/signin" element={<SignIn/>}></Route>
+        <Route path="/signup" element={<SignUp/>}></Route>
+        <Route path="/cart" element={<Cart />}></Route>
         <Route path="*" element={<PageNotFound />} />
     </Route>
     </Route>
