@@ -11,7 +11,7 @@ import { addToCart } from "../../../redux/orebiSlice";
 
 const Product = (props) => {
   const dispatch = useDispatch();
-  const _id = props.productName;
+  const _id = props._id;
   const idString = (_id) => {
     return String(_id).toLowerCase().split(" ").join("");
   };
@@ -34,6 +34,9 @@ const Product = (props) => {
         </div>
         <div className="absolute top-6 left-8">
           {props.badge && <Badge text="New" />}
+        </div>
+        <div className="absolute bottom-1 right-5">
+          {!props.available && <Badge available={false} />}
         </div>
         <div className="w-full h-12 absolute bg-white -bottom-[130px] group-hover:bottom-0 duration-700">
           <ul className="w-full h-full flex flex-col items-end justify-center gap-2 font-titleFont px-2 border-l border-r"> 

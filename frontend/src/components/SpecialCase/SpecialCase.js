@@ -43,7 +43,7 @@ const SpecialCase = () => {
         <p className="text-xs font-semibold font-titleFont">Orders</p>
       </div>
     </Link>
-    <Link to="/repaie">
+    <Link to="/repair">
         <div className="bg-white w-16 h-[70px] rounded-md flex flex-col gap-1 text-[#33475b] justify-center items-center shadow-testShadow overflow-x-hidden group cursor-pointer">
           <div className="flex justify-center items-center">
             <BsPhone className="text-2xl -translate-x-12 group-hover:translate-x-3 transition-transform duration-200" />
