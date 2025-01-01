@@ -18,6 +18,16 @@ import Home from "./pages/Home/Home";
 import SignIn from "./pages/Account/SignIn";
 import SignUp from "./pages/Account/SignUp";
 import Cart from "./pages/Cart/Cart";
+import Order from "./pages/Order/Order";
+import Repair from "./pages/Repair/repair";
+import RepairForm from "./pages/Repair/repairForm";
+import Phones from "./pages/Phones/Phones";
+import Watchs from "./pages/SmartWatchs/smartWatchs";
+import Tablets from "./pages/Tablets/Tablets";
+import Accessoris from "./pages/Accessories/Accessories";
+import About from "./pages/About/About";
+import ProductDetails from "./pages/ProductDetails/ProductDetails";
+
 
 const Layout = () => {
   return (
@@ -40,6 +50,16 @@ const router = createBrowserRouter(
         <Route path="/signin" element={<SignIn/>}></Route>
         <Route path="/signup" element={<SignUp/>}></Route>
         <Route path="/cart" element={<Cart />}></Route>
+        <Route path="/orders" element={<Order />}></Route>
+        <Route path="/repair" element={<Repair />}></Route>
+        <Route path="/repair/form" element={<RepairForm />}></Route>
+        <Route path="/phones" element={<Phones />}></Route>
+        <Route path="/watchs" element={<Watchs />}></Route>
+        <Route path="/tablets" element={<Tablets />}></Route>
+        <Route path="/accessories" element={<Accessoris />}></Route>
+        <Route path ="/about" element={<About/>}></Route>
+        <Route path="/product/:_id" element={<ProductDetails />}></Route>
+
         <Route path="*" element={<PageNotFound />} />
     </Route>
     </Route>

@@ -51,6 +51,7 @@ export const SplOfferData = [
     color: "Black",
     badge: true,
     des: "A high-performance smartphone with a sleek design and powerful features.",
+    available: false,
   },
   {
     _id: "102",
@@ -60,6 +61,8 @@ export const SplOfferData = [
     color: "Silver",
     badge: true,
     des: "A lightweight tablet with a stunning display and long battery life, perfect for work and entertainment.",
+    available: true
+    
   },
   {
     _id: "103",
@@ -69,6 +72,7 @@ export const SplOfferData = [
     color: "Rose Gold",
     badge: false,
     des: "Track your fitness, receive notifications, and stay connected with style.",
+    available: false,
   },
   {
     _id: "104",
@@ -78,6 +82,7 @@ export const SplOfferData = [
     color: "White",
     badge: false,
     des: "High-quality wireless earbuds with noise cancellation and long-lasting battery.",
+    available: true,
   },
   {
     _id: "105",
@@ -87,6 +92,7 @@ export const SplOfferData = [
     color: "Black",
     badge: false,
     des: "A fast and reliable charging dock compatible with most devices.",
+    available: true,
   },
 ];
 // =================== Special Offer data End here ==============
@@ -102,6 +108,7 @@ export const paginationItems = [
     color: "Black",
     badge: true,
     des: "A high-performance smartphone with a sleek design and powerful features.",
+    available: false,
   },
   {
     _id: "102",
@@ -111,6 +118,7 @@ export const paginationItems = [
     color: "Silver",
     badge: true,
     des: "A lightweight tablet with a stunning display and long battery life, perfect for work and entertainment.",
+    available: true,
   },
   {
     _id: "103",
@@ -120,6 +128,7 @@ export const paginationItems = [
     color: "Rose Gold",
     badge: false,
     des: "Track your fitness, receive notifications, and stay connected with style.",
+    available: false,
   },
   {
     _id: "104",
@@ -129,6 +138,7 @@ export const paginationItems = [
     color: "White",
     badge: false,
     des: "High-quality wireless earbuds with noise cancellation and long-lasting battery.",
+    available: true,
   },
   {
     _id: "105",
@@ -138,6 +148,7 @@ export const paginationItems = [
     color: "Black",
     badge: false,
     des: "A fast and reliable charging dock compatible with most devices.",
+    available: false,  
   },
 ];
 // =================== PaginationItems End here =================

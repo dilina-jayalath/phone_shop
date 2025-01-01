@@ -1,7 +1,7 @@
 import React from 'react'
 import Banner from '../../components/home/Banner/Banner'
 import BannerBottom from '../../components/home/Banner/BannerBottom'
-import Phones from '../../components/home/Phones/Phone'
+import Phones from '../../components/home/Items/Items'
 import YearProduct from '../../components/home/YearProduct/YearProduct'
 
 function Home() {
