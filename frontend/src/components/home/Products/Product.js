@@ -9,13 +9,16 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../redux/orebiSlice";
 
+const imagePath = "http://localhost/api/products/";
+
+
 const Product = (props) => {
   const dispatch = useDispatch();
-  const _id = props._id;
-  const idString = (_id) => {
-    return String(_id).toLowerCase().split(" ").join("");
+  const id = props.id;
+  const idString = (id) => {
+    return String(id).toLowerCase().split(" ").join("");
   };
-  const rootId = idString(_id);
+  const rootId = idString(id);
 
   const navigate = useNavigate();
   const productItem = props;
@@ -30,13 +33,13 @@ const Product = (props) => {
     <div className="w-full relative group" >
       <div className="max-w-80 max-h-80 relative overflow-y-hidden ">
         <div>
-          <Image className="w-full h-full" imgSrc={props.img} />
+          <Image className="w-full h-full" imgSrc={imagePath+props.img} />
         </div>
         <div className="absolute top-6 left-8">
-          {props.badge && <Badge text="New" />}
+          {props.badge == "yes" && <Badge text="New" />}
         </div>
         <div className="absolute bottom-1 right-5">
-          {!props.available && <Badge available={false} />}
+          {props.available == "no" && <Badge available={false} />}
         </div>
         <div className="w-full h-12 absolute bg-white -bottom-[130px] group-hover:bottom-0 duration-700">
           <ul className="w-full h-full flex flex-col items-end justify-center gap-2 font-titleFont px-2 border-l border-r"> 
@@ -66,7 +69,7 @@ const Product = (props) => {
               onClick={() =>
                 dispatch(
                   addToCart({
-                    _id: props._id,
+                    id: props.id,
                     name: props.productName,
                     quantity: 1,
                     image: props.img,

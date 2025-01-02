@@ -1,11 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumbs from "../../components/pageProps/Breadcrumbs";
 import ShopSideNav from "../../components/pageProps/shopPage/ShopSideNav";
 import Product from "../../components/home/Products/Product";
-import {paginationItems} from "../../constants/index"
+import axios from "axios";
 
 
 const Accessories = () => {
+
+  const [products, setItems] = useState([]);  // Change initial state to an empty array
+
+  useEffect(() => {
+    
+    const getItemsDB = () => {
+      axios
+        .get(
+          "http://localhost/api/get_product.php/accessories"
+        )
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.length == null){
+            alert("No products available");
+            setItems([]);
+          }else{
+            setItems(res.data);
+          }
+
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
+    };
+
+    if (products.length === 0){
+
+      getItemsDB();
+    }
+  }, []);
+
 
 
 
@@ -18,21 +49,21 @@ const Accessories = () => {
           <ShopSideNav />
         </div>
         <div className="w-full lgl:w-[75%]">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {paginationItems.map((item) => (
-              <Product
-                key={item._id}
-                _id={item._id}
-                img={item.img}
-                productName={item.productName}
-                price={item.price}
-                color={item.color}
-                badge={item.badge}
-                des={item.des}
-                available={item.available}
-              />
+        { products.length === 0 ? <h1>No products available</h1> :          
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {products.map((item) => (
+            <Product
+            id={item.id}
+            img={item.imageName}
+            productName={item.productName}
+            price={item.price}
+            color={item.color}
+            badge={item.condition}
+            des={item.description}
+            available={item.availability}
+          />
             ))}
-          </div>
+          </div>}
         </div>
       </div>
       {/* ================= Products End here ===================== */}

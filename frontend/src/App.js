@@ -19,7 +19,9 @@ import SignIn from "./pages/Account/SignIn";
 import SignUp from "./pages/Account/SignUp";
 import Cart from "./pages/Cart/Cart";
 import Order from "./pages/Order/Order";
-import Repair from "./pages/Repair/repair";
+import Repair from "./pages/Repair/Rapair";
+import RepairTableAdmin from "./pages/admin/RapairTable";
+
 import RepairForm from "./pages/Repair/repairForm";
 import Phones from "./pages/Phones/Phones";
 import Watchs from "./pages/SmartWatchs/smartWatchs";
@@ -27,6 +29,10 @@ import Tablets from "./pages/Tablets/Tablets";
 import Accessoris from "./pages/Accessories/Accessories";
 import About from "./pages/About/About";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
+import Admin from "./pages/admin/Admin";
+import Welcome from "./pages/admin/Welcome";
+import OrdersTable from "./pages/admin/OrderTable";
+import ProductTable from "./pages/admin/ProductTable";
 
 
 const Layout = () => {
@@ -59,9 +65,15 @@ const router = createBrowserRouter(
         <Route path="/accessories" element={<Accessoris />}></Route>
         <Route path ="/about" element={<About/>}></Route>
         <Route path="/product/:_id" element={<ProductDetails />}></Route>
+        <Route path="/admin" element={<Admin />}>
+        <Route index element={<Welcome />}></Route>
+          <Route path="/admin/repairs" element={<RepairTableAdmin />} className="z-20"></Route>
+          <Route path="/admin/products" element={<ProductTable />} className="z-20"></Route>
+          <Route path="/admin/orders" element={<OrdersTable />} className="z-20"></Route>
+        </Route>
 
         <Route path="*" element={<PageNotFound />} />
-    </Route>
+        </Route>
     </Route>
   )
 );

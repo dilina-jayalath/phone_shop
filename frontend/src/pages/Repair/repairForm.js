@@ -1,33 +1,55 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
-export default function RepairForm({ addRepair }) {
+export default function RepairForm() {
   const [deviceType, setDeviceType] = useState('');
-  const [brand, setBrand] = useState('');
-  const [model, setModel] = useState('');
+  const [deviceName, setDevice] = useState('');
   const [issue, setIssue] = useState('');
   const [notes, setNotes] = useState('');
 
+  const userId = useSelector((state) => state.auth.userId);
   const handleSubmit = (e) => {
+
+
     e.preventDefault();
     const newRepair = {
-      id: Date.now(),
+   
       deviceType,
-      brand,
-      model,
+      deviceName,
       issue,
       notes,
+      userId,
     };
     addRepair(newRepair);
     // Clear form fields after submission
     setDeviceType('');
-    setBrand('');
-    setModel('');
+    setDevice('');
     setIssue('');
     setNotes('');
   };
 
+  const addRepair = (newRepair) => {
+    fetch('http://localhost/api/repairs.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newRepair),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          alert('Repair added successfully!');
+        } else {
+          alert(data.error || 'Failed to add repair');
+        }
+      })
+      .catch((error) => console.error('Error:', error));
+  };
+  
+
   return (
-    <div className='p-10'>
+    <div className='py-10'>
     <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-4 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-bold mb-4">Add Repair</h2>
       <div className="mb-4">
@@ -44,25 +66,15 @@ export default function RepairForm({ addRepair }) {
           <option value="Smart Watch">Smart Watch</option>
         </select>
       </div>
+
       <div className="mb-4">
-        <label className="block text-gray-700">Brand</label>
+        <label className="block text-gray-700">Device Name</label>
         <input
           type="text"
-          value={brand}
-          onChange={(e) => setBrand(e.target.value)}
+          value={deviceName}
+          onChange={(e) => setDevice(e.target.value)}
           className="w-full mt-1 p-2 border border-gray-300 rounded-md"
-          placeholder="Enter brand"
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-gray-700">Model</label>
-        <input
-          type="text"
-          value={model}
-          onChange={(e) => setModel(e.target.value)}
-          className="w-full mt-1 p-2 border border-gray-300 rounded-md"
-          placeholder="Enter model"
+          placeholder="Enter deviceName Name"
           required
         />
       </div>
