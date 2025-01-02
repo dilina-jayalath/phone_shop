@@ -4,6 +4,7 @@ import Breadcrumbs from "../../components/pageProps/Breadcrumbs";
 import ProductInfo from "../../components/pageProps/productDetails/ProductInfo";
 
 const ProductDetails = () => {
+const imagePath = "http://localhost/api/products/";
   const {_id} = useParams()
   const location = useLocation();
   const [prevLocation, setPrevLocation] = useState("");
@@ -24,8 +25,8 @@ const ProductDetails = () => {
         <div className="h-full w-f">          
               <img
               className="w-full object-cover"
-              src={productInfo.img}
-              alt={productInfo.img}
+              src={imagePath+productInfo.img}
+              alt={imagePath+productInfo.img}
             />
           </div>
           <div className="h-full w-full md:col-span-2 xl:col-span-3 xl:p-14 flex flex-col gap-6 justify-center">

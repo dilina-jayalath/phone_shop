@@ -32,9 +32,12 @@ const ProductInfo = ({ productInfo }) => {
         Add to Cart
       </button>
       <p className="font-normal text-sm">
-        <span className="text-base font-medium"> Categories:</span> Spring
-        collection, Streetwear, Women Tags: featured SKU: N/A
-      </p>
+  <span className="text-base font-medium">Categories:</span> 
+  Smartphones, Feature Phones, Refurbished Phones, Smartwatches, Gaming Laptops
+  <span className="ml-2"><span className="text-base font-medium">Tags:</span> featured</span>
+  <span className="ml-2"><span className="text-base font-medium">SKU:</span> N/A</span>
+</p>
+
     </div>
   );
 };

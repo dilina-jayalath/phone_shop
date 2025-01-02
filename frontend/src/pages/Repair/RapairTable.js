@@ -1,48 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import PageTitle from "../../components/repair/PageTitle";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
-// Sample Data for Repair Items
-const repairItems = [
-  {
-    id: 1,
-    deviceImage: "https://via.placeholder.com/50",
-    deviceName: "iPhone 12",
-    deviceType: "Mobile Phone",
-    issue: "Screen Replacement",
-    customerName: "John Doe",
-    dropOffDate: "2025-01-01",
-    status: "In Progress",
-    notes: "Customer requested expedited service.",
-    file: "https://example.com/invoice1.pdf",
-  },
-  {
-    id: 2,
-    deviceImage: "https://via.placeholder.com/50",
-    deviceName: "Samsung Galaxy Tab S7",
-    deviceType: "Tablet",
-    issue: "Battery Issue",
-    customerName: "Jane Smith",
-    dropOffDate: "2025-01-02",
-    status: "Pending",
-    notes: "Device not holding charge.",
-    file: "https://example.com/invoice2.pdf",
-  },
-  {
-    id: 3,
-    deviceImage: "https://via.placeholder.com/50",
-    deviceName: "Apple Watch Series 6",
-    deviceType: "Smart Watch",
-    issue: "Software Update",
-    customerName: "Alice Johnson",
-    dropOffDate: "2025-01-03",
-    status: "Completed",
-    notes: "Update to latest OS version.",
-    file: "https://example.com/invoice3.pdf",
-  },
-];
 
 export default function RepairItemsTable() {
+  const userId = useSelector((state) => state.auth.userId);
+
+
+  const [repairs, setRepairs] = useState([]);  // Change initial state to an empty array
+  const getAllRepairs = () => {
+    axios
+      .get(
+        "http://localhost/api/repairs.php"
+      )
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.length == null){
+          alert("No repairs available");
+          setRepairs([]);
+        }else{
+          setRepairs(res.data);
+        }
+
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
+
+  useEffect(() => {
+    
+    if (repairs.length === 0){
+
+      getAllRepairs();
+    }
+  }, []);
+
   const [openIndex, setOpenIndex] = useState(null);
 
   const handleToggleAccordion = (index) => {
@@ -50,12 +45,21 @@ export default function RepairItemsTable() {
   };
 
   const handleDelete = (id) => {
-    // Implement delete functionality here
-    console.log(`Delete item with id: ${id}`);
+    axios
+      .delete(
+        `http://localhost/api/repairs.php/${id}`
+      )
+      .then(() => {
+        alert("Item deleted successfully!");
+        getAllRepairs();
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
   };
 
   return (
-    <div className="w-full bg-white shadow-md rounded-lg p-4">
+    <div className="w-full bg-white shadow-md rounded-lg my-8">
       <div className="">
       <PageTitle label="Booked Repairs" btn={true} btnTitle={'Make An Appointment for Repair'} link={'/repair/form'} btnStyle={'bg-green'}/>
 
@@ -73,7 +77,9 @@ export default function RepairItemsTable() {
             </tr>
           </thead>
           <tbody>
-            {repairItems.map((item, index) => {
+            {repairs
+            .filter((item) => item.userId === userId)
+            .map((item, index) => {
               const isOpen = openIndex === index;
               const rowClasses = "p-4 border-b border-gray-200";
 
@@ -83,12 +89,12 @@ export default function RepairItemsTable() {
                     {/* Device Profile */}
                     <td className={rowClasses}>
                       <div className="flex items-center">
-                        <img
+                        {/* <img
                           src={item.deviceImage}
                           alt={item.deviceName}
                           className="w-12 h-12 rounded-xl bg-blue-100 mr-4"
-                        />
-                        <span className="text-sm font-medium text-gray-800">
+                        /> */}
+                        <span className="pl-5 text-sm font-medium text-gray-800">
                           {item.deviceName}
                         </span>
                       </div>
@@ -104,7 +110,7 @@ export default function RepairItemsTable() {
                     {/* Drop-off Date */}
                     <td className={rowClasses}>
                       <span className="text-xs font-medium text-gray-600">
-                        {new Date(item.dropOffDate).toLocaleDateString()}
+                        {new Date(item.created_at).toLocaleDateString()}
                       </span>
                     </td>
 
@@ -128,10 +134,10 @@ export default function RepairItemsTable() {
                         <div className="grid grid-cols-8 gap-8">
                           <div className="col-span-3">
                             <strong className="font-bold text-black">
-                              Customer Name:
+                              Customer Email:
                             </strong>
                             <p className="text-sm text-gray-700">
-                              {item.customerName}
+                              {item.userId}
                             </p>
                           </div>
 

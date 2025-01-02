@@ -80,7 +80,7 @@ export const SplOfferData = [
     productName: "Wireless Earbuds",
     price: "49.00",
     color: "White",
-    badge: false,
+    badge: true,
     des: "High-quality wireless earbuds with noise cancellation and long-lasting battery.",
     available: true,
   },
@@ -102,8 +102,8 @@ export const SplOfferData = [
 export const paginationItems = [
   {
     _id: "101",
-    img: mobileOne,
     productName: "Smartphone A12",
+    img: mobileOne,
     price: "599.00",
     color: "Black",
     badge: true,

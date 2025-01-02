@@ -10,9 +10,11 @@ function Home() {
    
     <Banner />
     <BannerBottom/>
-    <Phones name={"New Arrival"}/>
+    <Phones name={"Smart Phones"} path={'phones'}/>
     <YearProduct/>
-    <Phones name={"Special Offers"}/>
+    <Phones name={"Smart Watches"} path={'watches'}/>
+    <Phones name={"Accessories"} path={'accessories'}/>
+
     </>
   )
 }
