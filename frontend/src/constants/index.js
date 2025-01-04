@@ -11,31 +11,31 @@ import {
 // =================== NavBarList Start here ====================
 export const navBarList = [
   {
-    _id: 1001,
+    id: 1001,
     title: "HOME",
     link: "/",
   },
   {
-    _id: 1002,
+    id: 1002,
     title: "PHONES",
     link: "/phones",
   },
   {
-    _id: 1003,
+    id: 1003,
     title: "TABLETS",
     link: "/tablets",
   },
   {
-    _id: 1004,
+    id: 1004,
     title: "WATCHES",
     link: "/watchs",
   },
   {
-    _id: 1005,
+    id: 1005,
     title: "ACCESSORIES",
     link: "/accessories",
   },  {
-    _id: 1006,
+    id: 1006,
     title: "ABOUT",
     link: "/about",
   }
@@ -44,7 +44,7 @@ export const navBarList = [
 // =================== Special Offer data Start here ============
 export const SplOfferData = [
   {
-    _id: "101",
+    id: "101",
     img: mobileOne,
     productName: "Smartphone A12",
     price: "599.00",
@@ -54,7 +54,7 @@ export const SplOfferData = [
     available: false,
   },
   {
-    _id: "102",
+    id: "102",
     img: tabletOne,
     productName: "Tablet Pro 10",
     price: "799.00",
@@ -65,7 +65,7 @@ export const SplOfferData = [
     
   },
   {
-    _id: "103",
+    id: "103",
     img: smartwatchOne,
     productName: "Smart Watch X",
     price: "199.00",
@@ -75,7 +75,7 @@ export const SplOfferData = [
     available: false,
   },
   {
-    _id: "104",
+    id: "104",
     img: accessoryOne,
     productName: "Wireless Earbuds",
     price: "49.00",
@@ -85,7 +85,7 @@ export const SplOfferData = [
     available: true,
   },
   {
-    _id: "105",
+    id: "105",
     img: accessoryTwo,
     productName: "Charging Dock",
     price: "29.00",
@@ -101,7 +101,7 @@ export const SplOfferData = [
 
 export const paginationItems = [
   {
-    _id: "101",
+    id: "101",
     productName: "Smartphone A12",
     img: mobileOne,
     price: "599.00",
@@ -111,7 +111,7 @@ export const paginationItems = [
     available: false,
   },
   {
-    _id: "102",
+    id: "102",
     img: tabletOne,
     productName: "Tablet Pro 10",
     price: "799.00",
@@ -121,7 +121,7 @@ export const paginationItems = [
     available: true,
   },
   {
-    _id: "103",
+    id: "103",
     img: smartwatchOne,
     productName: "Smart Watch X",
     price: "199.00",
@@ -131,7 +131,7 @@ export const paginationItems = [
     available: false,
   },
   {
-    _id: "104",
+    id: "104",
     img: accessoryOne,
     productName: "Wireless Earbuds",
     price: "49.00",
@@ -141,7 +141,7 @@ export const paginationItems = [
     available: true,
   },
   {
-    _id: "105",
+    id: "105",
     img: accessoryTwo,
     productName: "Charging Dock",
     price: "29.00",

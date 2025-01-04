@@ -20,29 +20,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $condition = $_POST['condition'] ?? '';
     $availability = $_POST['availability'] ?? '';
     $description = $_POST['description'] ?? '';
-    $newImageName = null;
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
         $imageName = $_FILES["image"]["name"];
         $tmpName = $_FILES["image"]["tmp_name"];
         $imageExtension = pathinfo($imageName, PATHINFO_EXTENSION);
-        $newImageName = uniqid() . '.' . $imageExtension;
         $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
         if (in_array(strtolower($imageExtension), $allowedTypes)) {
-            if (!move_uploaded_file($tmpName, './products/' . $newImageName)) {
+            if (!move_uploaded_file($tmpName, './products/' . $imageName)) {
                 echo json_encode(["error" => "Error uploading the image."]);
                 exit;
+            }
+            $sql = "UPDATE $type SET imageName = :imageName WHERE id = :id";
+    
+            $stmt = $conn->prepare($sql);
+    
+            $stmt->bindParam(':imageName', $imageName);
+            $stmt->bindParam(':id', $id);
+
+            if ($stmt->execute()) {
+                echo json_encode(["message" => "Product image name updated successfully."]);
+            } else {
+                echo json_encode(["error" => "Error image name updating the product."]);
             }
         } else {
             echo json_encode(["error" => "Invalid file type. Only JPG, JPEG, PNG, and GIF are allowed."]);
             exit;
         }
+
+
     }
 
     if ($id) {
         $sql = "UPDATE $type SET 
                     productName = :productName, 
-                    imageName = :imageName, 
                     price = :price, 
                     color = :color, 
                     `condition` = :condition, 
@@ -52,7 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':productName', $productName);
-        $stmt->bindParam(':imageName', $newImageName);
         $stmt->bindParam(':price', $price);
         $stmt->bindParam(':color', $color);
         $stmt->bindParam(':condition', $condition);

@@ -54,13 +54,12 @@ switch($method) {
                 if ($checkStmt->rowCount() > 0) {
                     $response = ['status' => 0, 'message' => 'Email already exists.'];
                 } else {
-                    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
                     $created_at = date('Y-m-d');
                     $sql = "INSERT INTO users (name, email, password, phone, address, city, country, zip, created_at) VALUES (:name, :email, :password, :phone, :address, :city, :country, :zip, :created_at)";
                     $stmt = $conn->prepare($sql);
                     $stmt->bindParam(':name', $name);
                     $stmt->bindParam(':email', $email);
-                    $stmt->bindParam(':password', $hashed_password);
+                    $stmt->bindParam(':password', $password);
                     $stmt->bindParam(':phone', $phone);
                     $stmt->bindParam(':address', $address);
                     $stmt->bindParam(':city', $city);
@@ -91,7 +90,7 @@ switch($method) {
                 $stmt->execute();
                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                if ($user && password_verify($password, $user['password'])) {
+                if ($user && ($password == $user['password'])) {
                     // Generate a token (for simplicity, using base64 encoding; consider using JWT for production)
                     $token = base64_encode(random_bytes(32));
                     // Store the token in the database with an expiration date (optional)

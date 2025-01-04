@@ -83,57 +83,47 @@ const SignUp = () => {
   };
   // ================= Email Validation End here ===============
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
+  
+    // Reset error messages
+    setErrClientName("");
+    setErrEmail("");
+    setErrPhone("");
+    setErrPassword("");
+    setErrAddress("");
+    setErrCity("");
+    setErrCountry("");
+    setErrZip("");
+  
+    // Field validation
     if (checked) {
-      if (!name) {
-        setErrClientName("Enter your name");
-      }
-      if (!email) {
-        setErrEmail("Enter your email");
-      } else {
-        if (!EmailValidation(email)) {
-          setErrEmail("Enter a Valid email");
-        }
-      }
-      if (!phone) {
-        setErrPhone("Enter your phone number");
-      }
-      if (!password) {
-        setErrPassword("Create a password");
-      } else {
-        if (password.length < 6) {
-          setErrPassword("Passwords must be at least 6 characters");
-        }
-      }
-      if (!address) {
-        setErrAddress("Enter your address");
-      }
-      if (!city) {
-        setErrCity("Enter your city name");
-      }
-      if (!country) {
-        setErrCountry("Enter the country you are residing");
-      }
-      if (!zip) {
-        setErrZip("Enter the zip code of your area");
-      }
-      // ============== Getting the value ==============
+      if (!name) setErrClientName("Enter your name");
+      if (!email) setErrEmail("Enter your email");
+      else if (!EmailValidation(email)) setErrEmail("Enter a valid email");
+      if (!phone) setErrPhone("Enter your phone number");
+      if (!password) setErrPassword("Create a password");
+      else if (password.length < 6) setErrPassword("Passwords must be at least 6 characters");
+      if (!address) setErrAddress("Enter your address");
+      if (!city) setErrCity("Enter your city name");
+      if (!country) setErrCountry("Enter the country you are residing");
+      if (!zip) setErrZip("Enter the zip code of your area");
+  
+      // Proceed if all validations pass
       if (
         name &&
         email &&
         EmailValidation(email) &&
+        phone &&
         password &&
         password.length >= 6 &&
         address &&
         city &&
         country &&
-        zip&&
-        phone
+        zip
       ) {
-
-        setInputs({
-          ...inputs,
+        // Prepare input data
+        const inputs = {
           name,
           email,
           phone,
@@ -141,27 +131,54 @@ const SignUp = () => {
           address,
           city,
           country,
-          zip
-        });
-        
-        
-        axios.post('http://localhost/api/user.php/signup', inputs).then(function(response){
-          console.log(response.data);
-          setSuccessMsg(response.data.message);
-      });
-      
+          zip,
+        };
+  
+        try {
+          // Make the signup request
+          const response = await axios.post("http://localhost/api/user.php/signup", inputs);
+  
+          if (response.data) {
+            // Show success message
+            const  message  = response.data.message;
 
-        setClientName("");
-        setEmail("");
-        setPhone("");
-        setPassword("");
-        setAddress("");
-        setCity("");
-        setCountry("");
-        setZip("");
+          message === "User registered successfully." ?  alert(`Success: ${message}`) || setSuccessMsg(`Success: ${message}`) :  alert(`please Si again: ${message}`);
+
+            console.log(response.data.message);
+
+            // Clear input fields
+            setClientName("");
+            setEmail("");
+            setPhone("");
+            setPassword("");
+            setAddress("");
+            setCity("");
+            setCountry("");
+            setZip("");
+
+          }
+        } catch (error) {
+          // Handle errors
+          if (error.response) {
+            // Server error
+            alert(`Error: ${error.response.data.message || "An error occurred on the server."}`);
+            console.error("Backend error:", error.response.data);
+          } else if (error.request) {
+            // No response from server
+            alert("Error: No response from the server. Please try again later.");
+            console.error("No response from server:", error.request);
+          } else {
+            // Other errors
+            alert(`Error: ${error.message}`);
+            console.error("Error:", error.message);
+          }
+        }
       }
+    } else {
+      alert("Please agree to the terms and conditions before proceeding.");
     }
   };
+  
   return (
     <div className="w-full h-screen flex items-center justify-center">
       
@@ -180,7 +197,7 @@ const SignUp = () => {
               </button>
             </Link>
           </div>
-        ) : ("")}
+        ) : (
 
           <form className="w-full lgl:w-[500px] h-screen flex items-center justify-center">
             <div className="px-6 py-4 w-full h-[96%] flex flex-col justify-start overflow-y-scroll scrollbar-thin scrollbar-thumb-primeColor">
@@ -383,6 +400,9 @@ const SignUp = () => {
             </div>
 
           </form>
+        )}
+
+          
           
      
       </div>

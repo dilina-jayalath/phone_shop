@@ -5,7 +5,7 @@ import ProductInfo from "../../components/pageProps/productDetails/ProductInfo";
 
 const ProductDetails = () => {
 const imagePath = "http://localhost/api/products/";
-  const {_id} = useParams()
+  const {id} = useParams()
   const location = useLocation();
   const [prevLocation, setPrevLocation] = useState("");
   const [productInfo, setProductInfo] = useState([]);

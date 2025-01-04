@@ -13,7 +13,8 @@ function ProductTable() {
   const [productCondition, setProductCondition] = useState("");
   const [description, setDescription] = useState("");
   const [availability, setAvailability] = useState("");
-const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [newImagePreview, setNewImagePreview] = useState(null);
   const [items, setItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [originalItems, setOriginalItems] = useState([]);
@@ -76,11 +77,11 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
     setProductCondition("");
     setIdSet("");
     setColor("");
-    setImagePreview(null);
+    setImagePreview("");
     setItemType("");
     setAvailability("");
     setDescription("");
-
+    setNewImagePreview("");
   };
 
   const handleupdate = (Id , table) => {
@@ -105,7 +106,7 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
         } = res.data;
         setItemId(id);
         setProductName(productName);
-        setImage(imageName);
+        setImage(null);
         setPrice(price);
         setDescription(description);
         setIdSet(id);
@@ -121,7 +122,7 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
   };
 
   const sendUpdatedData = () => {
-    if (!itemId || !price || !description) {
+    if (!itemId || !price || !description ) {
       alert("Please fill in all required fields.");
       return;
     }
@@ -183,7 +184,9 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
           'Content-Type': 'multipart/form-data',
         },
       });
-      alert(response.data.message);
+      console.log(response.data);
+      response.data.error && alert(response.data.error);
+      response.data.message && alert(response.data.message);
       // Clear form fields after successful submission
       setProductName('');
       setPrice('');
@@ -193,6 +196,9 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
       setDescription('');
       setImagePreview(null);
       setImage(null);
+      getItemsDB();
+      setNewImagePreview(null);
+
     } catch (error) {
       console.error('There was an error uploading the product!', error);
       alert('Failed to upload product. Please try again.');
@@ -205,12 +211,14 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
       setImage(file);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result);
+        setImagePreview("");
+        setNewImagePreview(reader.result);
       };
       reader.readAsDataURL(file);
     } else {
-      setImage(null);
       setImagePreview(null);
+      setImage(null);
+      setNewImagePreview(null);
     }
   };
 
@@ -303,7 +311,7 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
           </thead>
           <tbody id="attendees-list">
             {items.map((item) => (
-              <tr key={item._id} className="text-center ">
+              <tr key={item.id} className="text-center ">
                 <td class="border border-gray-300 px-4 py-2">
                   {item.type}
                 </td>
@@ -438,11 +446,19 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
               />
               {imagePreview && (
                 <img
-                 src={imagePath+imagePreview}
+                 src={  imagePath+imagePreview }
                   alt="Product Preview"
                   className="mt-2 h-20 w-20 object-cover"
                 />
               )}
+              {newImagePreview && (
+                <img
+                 src={newImagePreview}
+                  alt="Product Preview"
+                  className="mt-2 h-20 w-20 object-cover"
+                />
+              )}
+              
     </div>
   </td>
 

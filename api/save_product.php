@@ -28,13 +28,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $imageName = $_FILES["image"]["name"];
         $tmpName = $_FILES["image"]["tmp_name"];
         $imageExtension = pathinfo($imageName, PATHINFO_EXTENSION);
-        $newImageName = uniqid() . '.' . $imageExtension;
 
         // Validate file type (allow only JPG, JPEG, PNG, GIF)
         $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+
+
         if (in_array(strtolower($imageExtension), $allowedTypes)) {
             // Move the uploaded file to the products directory
-            if (move_uploaded_file($tmpName, './products/' . $newImageName)) {
+            if (move_uploaded_file($tmpName, './products/' . $imageName)) {
                 // Prepare SQL statement to insert product data
 
                 $sql = "INSERT INTO $type (productName, imageName, price, color, `condition`, availability, description) 
@@ -43,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 // Bind parameters
                 $stmt->bindParam(':productName', $productName);
-                $stmt->bindParam(':imageName', $newImageName);
+                $stmt->bindParam(':imageName', $imageName);
                 $stmt->bindParam(':price', $price);
                 $stmt->bindParam(':color', $color);
                 $stmt->bindParam(':condition', $condition);

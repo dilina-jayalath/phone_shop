@@ -13,7 +13,7 @@ function StatusRound({completed , name}) {
         )
             :(
             <>
-                <span className="bg-red-500 dark:bg-red-300 rounded-full w-28 h-28 inline-block mr-2"></span>
+                <span className="bg-red-200 dark:bg-gray-200 rounded-full w-28 h-28 inline-block mr-2"></span>
                 <span className="text-muted-foreground dark:text-slate-400">{name}</span>
                 </>
 
