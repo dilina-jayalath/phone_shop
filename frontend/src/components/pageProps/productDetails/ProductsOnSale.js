@@ -10,7 +10,7 @@ const ProductsOnSale = () => {
       <div className="flex flex-col gap-2">
         {SplOfferData.map((item) => (
           <div
-            key={item._id}
+            key={item.id}
             className="flex items-center gap-4 border-b-[1px] border-b-gray-300 py-2"
           >
             <div>

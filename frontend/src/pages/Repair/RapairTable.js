@@ -31,9 +31,7 @@ export default function RepairItemsTable() {
   };
 
   useEffect(() => {
-    
     if (repairs.length === 0){
-
       getAllRepairs();
     }
   }, []);

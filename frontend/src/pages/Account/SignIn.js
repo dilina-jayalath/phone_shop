@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { logoLight } from "../../assets/images";
 import { useDispatch } from "react-redux";
 import { signIn } from "../../redux/authSlice";
@@ -31,33 +31,61 @@ const SignIn = () => {
     setErrPassword("");
   };
   // ============= Event Handler End here ===============
-  const handleSignUp = (e) => {
+ 
+  const handleSignUp = async (e) => {
     e.preventDefault();
-
+  
     if (!email) {
       setErrEmail("Enter your email");
     }
-
+  
     if (!password) {
       setErrPassword("Create a password");
     }
-    // ============== Getting the value ==============
+  
+    // Proceed if both email and password are present
     if (email && password) {
+      try {
+        const response = await axios.post("http://localhost/api/user.php/signin", { email, password });
+  
+        if (response.data) {
+          const { message, token } = response.data;
+  
+          // Display success message
+          console.log(message);
+          message === "Login successful." ?  alert(`Success: ${message}`) || setSuccessMsg(`Success: ${message}`) :  alert(`please Login again: ${message}`);
 
-      axios.post('http://localhost/api/user.php/signin', {email,password}).then(function(response){
-        console.log(response.data);
-        setSuccessMsg(response.data.message);
-
-        response.data.token && dispatch(signIn(email));
-    });
-
-      
-    
-
-      setEmail("");
-      setPassword("");
+  
+          // Dispatch sign-in action if token exists
+          if (token) {
+            dispatch(signIn(email));
+          }
+  
+          // Clear form fields
+          setEmail("");
+          setPassword("");
+        }
+      } catch (error) {
+        // Handle errors
+        if (error.response) {
+          // Backend returned an error
+          alert(`Error: ${error.response.data.message || "Something went wrong."}`);
+          console.error("Backend error:", error.response.data);
+        } else if (error.request) {
+          // No response from the server
+          alert("Error: No response from the server. Please try again later.");
+          console.error("No response:", error.request);
+        } else {
+          // Other errors
+          alert(`Error: ${error.message}`);
+          console.error("Error:", error.message);
+        }
+      }
     }
   };
+  
+
+
   return (
     <div className="w-full h-screen flex items-center justify-center">
   

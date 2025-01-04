@@ -6,14 +6,17 @@ import Breadcrumbs from "../../components/pageProps/Breadcrumbs";
 import { resetCart } from "../../redux/orebiSlice";
 import { emptyCart } from "../../assets/images/index";
 import ItemCard from "./ItemCard";
+import axios from "axios";
 
 const Cart = () => {
-  const userId = "60f1";
+  const userId = useSelector((state) => state.auth.userId);
   const dispatch = useDispatch();
   const products = useSelector((state) => state.orebi.products);
-  console.log(products);
   const [totalAmt, setTotalAmt] = useState("");
   const [shippingCharge, setShippingCharge] = useState("");
+  const [location, setLocation] = useState();
+
+
   useEffect(() => {
     let price = 0;
     products.map((item) => {
@@ -31,6 +34,66 @@ const Cart = () => {
       setShippingCharge(400);
     }
   }, [totalAmt]);
+
+  
+ const handleLocation = (e) => {
+    setLocation(e.target.value);
+  }
+
+
+
+
+  const handleOrderSubmit = async () => {
+
+    if (!userId) {
+      alert('Please login to place an order');
+      return;
+    }
+    if (products.length === 0) {
+      alert('Cart is empty');
+      return;
+    }
+    if (!location) {
+      alert('Please Enter a location');
+      return;
+    }
+
+    const orderDetails = products.map((item) => ({
+      name: item.name,
+      quantity: item.quantity,
+      color: item.colors,
+    }));
+  
+    const orderData = {
+      userId,
+      details: orderDetails,
+      price: totalAmt + shippingCharge,
+      location: location,
+    };
+  
+    try {
+      const response = await axios.post('http://localhost/api/orders.php', orderData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log('Order submitted successfully:', response.data);
+      alert('Order submitted successfully');
+      dispatch(resetCart());
+    } catch (error) {
+      if (error.response) {
+        console.error('Backend responded with error:', error.response.data);
+      } else if (error.request) {
+        console.error('No response from server:', error.request);
+      } else {
+        console.error('Error setting up request:', error.message);
+      }
+    }
+
+
+  };
+  
+
   return (
     <div className="max-w-container mx-auto px-4">
       <Breadcrumbs title="Cart" />
@@ -44,7 +107,7 @@ const Cart = () => {
           </div>
           <div className="mt-5">
             {products.map((item) => (
-              <div key={item._id}>
+              <div key={item.id}>
                 <ItemCard item={item} />
               </div>
             ))}
@@ -60,12 +123,15 @@ const Cart = () => {
           <div className="flex flex-col mdl:flex-row justify-between border py-4 px-4 items-center gap-2 mdl:gap-0">
             <div className="flex items-center gap-4">
               <input
+                onChange={(e) => setLocation(e.target.value)} // Update state directly
+                value={location || ""}
                 className="w-44 mdl:w-52 h-8 px-4 border text-primeColor text-sm outline-none border-gray-400"
                 type="text"
-                placeholder="Coupon Number"
+                placeholder="Enter Address here"
+                required
               />
               <p className="text-sm mdl:text-base font-semibold">
-                Apply Coupon
+                Enter Address
               </p>
             </div>
             <p className="text-lg font-semibold">Update Cart</p>
@@ -81,7 +147,7 @@ const Cart = () => {
                   </span>
                 </p>
                 <p className="flex items-center justify-between border-[1px] border-gray-400 border-b-0 py-1.5 text-lg px-4 font-medium">
-                  Shipping Charge
+                  Delivery Charge
                   <span className="font-semibold tracking-wide font-titleFont">
                     Rs. {shippingCharge}
                   </span>
@@ -94,11 +160,10 @@ const Cart = () => {
                 </p>
               </div>
               <div className="flex justify-end">
-                <Link to="/paymentgateway">
-                  <button className="w-52 h-10 bg-primeColor text-white hover:bg-black duration-300">
+                  <button className="w-52 h-10 bg-primeColor text-white hover:bg-black duration-300"
+                  onClick={handleOrderSubmit}>
                     Proceed to Checkout
                   </button>
-                </Link>
               </div>
             </div>
           </div>

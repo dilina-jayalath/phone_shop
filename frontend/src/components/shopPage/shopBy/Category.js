@@ -7,25 +7,25 @@ const Category = () => {
   const [showSubCatOne, setShowSubCatOne] = useState(false);
   const items = [
     {
-      _id: 990,
+      id: 990,
       title: "New Arrivals",
       icons: true,
     },
     {
-      _id: 991,
+      id: 991,
       title: "Gudgets",
     },
     {
-      _id: 992,
+      id: 992,
       title: "Accessories",
       icons: true,
     },
     {
-      _id: 993,
+      id: 993,
       title: "Electronics",
     },
     {
-      _id: 994,
+      id: 994,
       title: "Others",
     },
   ];
@@ -34,9 +34,9 @@ const Category = () => {
       <NavTitle title="Shop by Category" icons={false} />
       <div>
         <ul className="flex flex-col gap-4 text-sm lg:text-base text-[#767676]">
-          {items.map(({ _id, title, icons }) => (
+          {items.map(({ id, title, icons }) => (
             <li
-              key={_id}
+              key={id}
               className="border-b-[1px] border-b-[#F0F0F0] pb-2 flex items-center justify-between"
             >
               {title}
