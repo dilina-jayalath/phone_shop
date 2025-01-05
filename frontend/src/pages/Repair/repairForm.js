@@ -6,6 +6,7 @@ export default function RepairForm() {
   const [deviceName, setDevice] = useState('');
   const [issue, setIssue] = useState('');
   const [notes, setNotes] = useState('');
+  const [contact, setContact] = useState('');
 
   const userId = useSelector((state) => state.auth.userId);
   const handleSubmit = (e) => {
@@ -19,6 +20,7 @@ export default function RepairForm() {
       issue,
       notes,
       userId,
+      contact,
     };
     addRepair(newRepair);
     // Clear form fields after submission
@@ -26,6 +28,7 @@ export default function RepairForm() {
     setDevice('');
     setIssue('');
     setNotes('');
+    setContact('');
   };
 
   const addRepair = (newRepair) => {
@@ -75,6 +78,17 @@ export default function RepairForm() {
           onChange={(e) => setDevice(e.target.value)}
           className="w-full mt-1 p-2 border border-gray-300 rounded-md"
           placeholder="Enter deviceName Name"
+          required
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700">Contact Number</label>
+        <input
+          type="number"
+          value={contact}
+          onChange={(e) => setContact(e.target.value)}
+          className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+          placeholder="Enter Contact Number"
           required
         />
       </div>

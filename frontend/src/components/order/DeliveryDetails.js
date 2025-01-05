@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import StatusRound from './StatusRound';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { TiContacts } from 'react-icons/ti';
 
 function DeliveryDetails() {
   const [orders, setOrders] = useState([]);
@@ -37,10 +38,10 @@ function DeliveryDetails() {
   };
 
   useEffect(() => {
-    if (orders.length === 0) {
+  
       getAllOrders();
-    }
-  }, [orders]);
+ 
+  }, []);
 
   return (
     <div className="bg-background p-4 md:p-8 rounded-lg shadow-lg transition-all duration-300 space-y-6">
@@ -53,17 +54,27 @@ function DeliveryDetails() {
         .map((order) => (
           <div key={order.OrderId} className="order-details">
             <p className="text-2xl md:text-3xl font-extrabold text-accent">#Ord{order.orderId}</p>
-            <p className="text-base md:text-lg text-muted-foreground dark:text-zinc-300">
+            <p className="text-base md:text-lg text-muted-foreground dark:text-zinc-600">
               # Status: 
               <span className={`font-semibold  text-green-600 dark:text-green-400`}>
                 {order.status}
               </span>
             </p>
             <p className="text-sm md:text-base text-muted-foreground dark:text-zinc-400">
-              Your order id is on its way to you!
+              Your order id is on its way to :     {" "}      
+              <span className={`font-semibold  text-red-600 dark:text-red-400`}>
+               {order.location}
+              </span>
+            </p>
+      
+            <p className="text-sm md:text-base text-muted-foreground ">
+              Contact Number :     {" "}      
+              <span className={`font-semibold  text-blue-600 dark:blue-red-400`}>
+               {order.contact}
+              </span>
             </p>
 
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-3">
               <div className="flex w-full md:w-1/4 mt-[-10px]">
                 <span className="ml-5 bg-black dark:bg-black-400 w-full h-1 opacity-50"></span>
               </div>

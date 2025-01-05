@@ -45,11 +45,13 @@ switch($method) {
                 isset($input['userId']) &&
                 isset($input['details']) && // Expecting an array of order details
                 isset($input['price']) &&
-                isset($input['location'])
+                isset($input['location'])&&
+                isset($input['contact'])
             ) {
                 $userId = htmlspecialchars($input['userId']);
                 $price = htmlspecialchars($input['price']);
                 $location = htmlspecialchars($input['location']);
+                $contact = htmlspecialchars($input['contact']);
                 $details = $input['details']; // Details should be an array
                 $created_at = date('Y-m-d');
     
@@ -57,12 +59,13 @@ switch($method) {
                 $detailsJson = json_encode($details);
     
                 // Prepare SQL statement
-                $sql = "INSERT INTO orders (userId, details, price, location, created_at) 
-                        VALUES (:userId, :details, :price, :location, :created_at)";
+                $sql = "INSERT INTO orders (userId, contact, details, price, location, created_at) 
+                        VALUES (:userId, :contact , :details, :price, :location, :created_at)";
                 $stmt = $conn->prepare($sql);
     
                 // Bind parameters
                 $stmt->bindParam(':userId', $userId);
+                $stmt->bindParam(':contact', $contact);
                 $stmt->bindParam(':details', $detailsJson);
                 $stmt->bindParam(':price', $price);
                 $stmt->bindParam(':location', $location);
