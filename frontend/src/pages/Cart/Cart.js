@@ -15,7 +15,7 @@ const Cart = () => {
   const [totalAmt, setTotalAmt] = useState("");
   const [shippingCharge, setShippingCharge] = useState("");
   const [location, setLocation] = useState();
-
+  const [contact, setContact] = useState();
 
   useEffect(() => {
     let price = 0;
@@ -57,6 +57,10 @@ const Cart = () => {
       alert('Please Enter a location');
       return;
     }
+    if (!contact) {
+      alert('Please Enter a Contact Number');
+      return;
+    }
 
     const orderDetails = products.map((item) => ({
       name: item.name,
@@ -69,6 +73,7 @@ const Cart = () => {
       details: orderDetails,
       price: totalAmt + shippingCharge,
       location: location,
+      contact: contact,
     };
   
     try {
@@ -132,6 +137,19 @@ const Cart = () => {
               />
               <p className="text-sm mdl:text-base font-semibold">
                 Enter Address
+              </p>
+            </div>
+            <div className="flex items-center gap-4">
+              <input
+                onChange={(e) => setContact(e.target.value)} // Update state directly
+                value={contact || ""}
+                className="w-44 mdl:w-52 h-8 px-4 border text-primeColor text-sm outline-none border-gray-400"
+                type="number"
+                placeholder="Enter Contact Number"
+                required
+              />
+              <p className="text-sm mdl:text-base font-semibold">
+                Enter Contact Number
               </p>
             </div>
             <p className="text-lg font-semibold">Update Cart</p>

@@ -65,7 +65,7 @@ export default function RepairItemsTable() {
       <table className="w-full min-w-full table-auto text-left">
         <thead>
           <tr>
-            {["Device", "Issue", "Drop-off Date", "Status", "Action"].map((head) => (
+            {["Device", "Issue", "Contact Number","Drop-off Date", "Status", "Action"].map((head) => (
               <th
                 key={head}
                 className="border-b border-gray-200 bg-gray-100 p-4 text-sm font-medium text-gray-700"
@@ -94,6 +94,11 @@ export default function RepairItemsTable() {
                   <td className={rowClasses}>
                     <span className="text-sm font-medium text-gray-800">
                       {item.issue}
+                    </span>
+                  </td>
+                  <td className={rowClasses}>
+                    <span className="text-sm font-medium text-gray-800">
+                      {item.contact}
                     </span>
                   </td>
 

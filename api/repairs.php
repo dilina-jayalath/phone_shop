@@ -48,23 +48,26 @@ switch($method) {
     ) {
         $deviceType = htmlspecialchars($input['deviceType']);
         $deviceName = htmlspecialchars($input['deviceName']);
+        $contact = htmlspecialchars($input['contact']);
         $issue = htmlspecialchars($input['issue']);
         $notes = isset($input['notes']) ? htmlspecialchars($input['notes']) : '';
         $created_at = date('Y-m-d');
         $userId = $input['userId'];
 
         // Prepare SQL statement
-        $sql = "INSERT INTO repairs (userId ,device_type, deviceName, issue, notes, created_at) 
-                VALUES (:userId,:deviceType, :deviceName, :issue, :notes, :created_at)";
+        $sql = "INSERT INTO repairs (userId ,device_type, deviceName, contact ,  issue, notes, created_at) 
+                VALUES (:userId,:deviceType, :deviceName,:contact, :issue, :notes, :created_at)";
         $stmt = $conn->prepare($sql);
 
         // Bind parameters
         $stmt->bindParam(':deviceType', $deviceType);
+        $stmt->bindParam(':contact', $contact);
         $stmt->bindParam(':deviceName', $deviceName);
         $stmt->bindParam(':issue', $issue);
         $stmt->bindParam(':notes', $notes);
         $stmt->bindParam(':created_at', $created_at);
         $stmt->bindParam(':userId', $userId);
+
 
         // Execute the statement
         if ($stmt->execute()) {

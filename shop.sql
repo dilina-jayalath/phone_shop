@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jan 04, 2025 at 05:36 PM
+-- Generation Time: Jan 05, 2025 at 02:38 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -48,22 +48,13 @@ CREATE TABLE `accessories` (
 CREATE TABLE `orders` (
   `orderId` int(11) NOT NULL,
   `userId` varchar(64) NOT NULL,
+  `contact` varchar(20) NOT NULL,
   `details` varchar(255) NOT NULL,
   `price` varchar(128) NOT NULL,
   `status` varchar(128) NOT NULL DEFAULT 'Order Placed',
   `created_at` date NOT NULL,
   `location` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `orders`
---
-
-INSERT INTO `orders` (`orderId`, `userId`, `details`, `price`, `status`, `created_at`, `location`) VALUES
-(7, 'dilina@gmail.com', '[{\"name\":\"test\",\"quantity\":1,\"color\":\"test\"},{\"name\":\"testTabl\",\"quantity\":1,\"color\":\"testTabl\"}]', '3733', 'Out for Delivery', '2025-01-03', 'Colombo'),
-(9, 'dilina@gmail.com', '[{\"name\":\"test\",\"quantity\":1,\"color\":\"test\"}]', '1511', 'Out for Delivery', '2025-01-03', 'Colombo'),
-(11, 'dilina1@gmail.com', '[{\"name\":\"testTabl\",\"quantity\":1,\"color\":\"testTabl\"}]', '2622', 'Order Placed', '2025-01-03', 'Colombo'),
-(13, 'diliya12a1@gmail.com', '[{\"name\":\"test\",\"quantity\":1,\"color\":\"test\"}]', '1511', 'In Transit', '2025-01-04', 'abc');
 
 -- --------------------------------------------------------
 
@@ -93,6 +84,7 @@ CREATE TABLE `repairs` (
   `id` int(11) NOT NULL,
   `device_type` varchar(64) NOT NULL,
   `deviceName` varchar(64) NOT NULL,
+  `contact` varchar(20) NOT NULL,
   `issue` varchar(255) NOT NULL,
   `notes` varchar(255) DEFAULT NULL,
   `created_at` date NOT NULL DEFAULT current_timestamp(),
@@ -137,6 +129,13 @@ CREATE TABLE `users` (
   `created_at` date NOT NULL,
   `updated_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `phone`, `address`, `city`, `country`, `zip`, `created_at`, `updated_at`) VALUES
+(16, 'admin', 'admin@gmail.com', 'admin123', '070123456', 'colombo', 'colombo', 'sri Lanaka', '90120', '2025-01-05', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -216,7 +215,7 @@ ALTER TABLE `accessories`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `phones`
@@ -228,19 +227,19 @@ ALTER TABLE `phones`
 -- AUTO_INCREMENT for table `repairs`
 --
 ALTER TABLE `repairs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tablets`
 --
 ALTER TABLE `tablets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `watches`
