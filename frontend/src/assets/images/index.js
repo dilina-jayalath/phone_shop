@@ -1,8 +1,9 @@
 import logo from "./logo.png";
 import logoLight from "./logoLight.png";
-import bannerImgOne from "./banner/bannerImgOne.webp";
-import bannerImgTwo from "./banner/bannerImgTwo.webp";
-import bannerImgThree from "./banner/bannerImgThree.webp";
+import bannerImgOne from "./banner/1p.jpg";
+import bannerImgTwo from "./banner/2p.jpg";
+import bannerImgThree from "./banner/3P.jpg";
+import bannerImgFour from "./banner/4P.jpg";
 
 // ============== Products Start here ====================
 
@@ -24,6 +25,7 @@ export {
   bannerImgOne,
   bannerImgTwo,
   bannerImgThree,
+  bannerImgFour,
 
 
   paymentCard,
