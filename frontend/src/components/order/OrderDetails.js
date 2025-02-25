@@ -4,7 +4,7 @@ import axios from 'axios';
 
 function OrderDetails() {
   const userId = useSelector((state) => state.auth.userId);
-  const products = useSelector((state) => state.orebi.products);
+  const products = useSelector((state) => state.orebi.products) || [];
 
   const handleOrderSubmit = async () => {
     const orderDetails = products.map((item) => ({

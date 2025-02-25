@@ -3,7 +3,7 @@
 	* Database Connection
 	*/
 	class DbConnect {
-		private $server = 'localhost:3306';
+		private $server = 'localhost:3309';
 		private $dbname = 'shop';
 		private $user = 'root';
 		private $pass = '';
