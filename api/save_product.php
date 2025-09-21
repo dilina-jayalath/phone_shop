@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $condition = $_POST['condition'] ?? '';
     $availability = $_POST['availability'] ?? '';
     $description = $_POST['description'] ?? '';
+    $qty = intval($_POST['qty'] ?? 0);
 
     // Check if an image file is uploaded
     if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
@@ -38,8 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (move_uploaded_file($tmpName, './products/' . $imageName)) {
                 // Prepare SQL statement to insert product data
 
-                $sql = "INSERT INTO $type (productName, imageName, price, color, `condition`, availability, description) 
-                        VALUES (:productName, :imageName, :price, :color, :condition, :availability, :description)";
+                $sql = "INSERT INTO $type (productName, imageName, price, color, `condition`, availability, description, qty) 
+                        VALUES (:productName, :imageName, :price, :color, :condition, :availability, :description, :qty)";
                 $stmt = $conn->prepare($sql);
 
                 // Bind parameters
@@ -50,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $stmt->bindParam(':condition', $condition);
                 $stmt->bindParam(':availability', $availability);
                 $stmt->bindParam(':description', $description);
+                $stmt->bindParam(':qty', $qty);
 
                 // Execute the statement
                 if ($stmt->execute()) {

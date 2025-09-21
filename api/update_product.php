@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $condition = $_POST['condition'] ?? '';
     $availability = $_POST['availability'] ?? '';
     $description = $_POST['description'] ?? '';
+    $qty = intval($_POST['qty'] ?? 0);
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
         $imageName = $_FILES["image"]["name"];
@@ -58,7 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     color = :color, 
                     `condition` = :condition, 
                     availability = :availability, 
-                    description = :description 
+                    description = :description,
+                    qty = :qty 
                 WHERE id = :id";
 
         $stmt = $conn->prepare($sql);
@@ -68,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindParam(':condition', $condition);
         $stmt->bindParam(':availability', $availability);
         $stmt->bindParam(':description', $description);
+        $stmt->bindParam(':qty', $qty);
         $stmt->bindParam(':id', $id);
         
 

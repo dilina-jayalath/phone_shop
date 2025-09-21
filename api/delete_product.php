@@ -20,7 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     $id = $path[3] ??  null;
     $type = $path[4] ?? '';
 
-    echo json_encode(["path" => $path, "id" => $id, "type" => $type]);
+    // Debug logging (optional - can be removed in production)
+    error_log("Delete request - ID: $id, Type: $type");
 
     if ($id && $type) {
         // Delete product from the database
@@ -29,7 +30,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
         $stmt->bindParam(':id', $id);
 
         if ($stmt->execute()) {
-            echo json_encode(["message" => "Product deleted successfully."]);
+            // Check if any rows were actually deleted
+            $rowsAffected = $stmt->rowCount();
+            if ($rowsAffected > 0) {
+                echo json_encode(["message" => "Product deleted successfully."]);
+            } else {
+                echo json_encode(["error" => "Product not found or already deleted."]);
+            }
         } else {
             echo json_encode(["error" => "Error deleting the product."]);
         }
