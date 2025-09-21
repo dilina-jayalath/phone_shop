@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   userInfo: [],
   products: [],
+  cartMessage: null,
 };
 
 export const orebiSlice = createSlice({
@@ -10,13 +11,45 @@ export const orebiSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
+      // Check if the product has stock availability and quantity
+      const { availability, qty } = action.payload;
+      
+      // Check if product is available and has stock
+      const isAvailable = availability === "yes" || availability === "true" || availability === true;
+      const hasStock = qty && parseInt(qty) > 0;
+      
+      if (!isAvailable || !hasStock) {
+        // Don't add to cart if out of stock
+        state.cartMessage = {
+          type: 'error',
+          text: 'This product is currently out of stock'
+        };
+        return;
+      }
+      
       const item = state.products.find(
         (item) => item.id === action.payload.id
       );
       if (item) {
-        item.quantity += action.payload.quantity;
+        // Check if adding more would exceed available stock
+        if (item.quantity + action.payload.quantity <= parseInt(qty)) {
+          item.quantity += action.payload.quantity;
+          state.cartMessage = {
+            type: 'success',
+            text: `Quantity updated! ${action.payload.name} quantity increased to ${item.quantity}`
+          };
+        } else {
+          state.cartMessage = {
+            type: 'warning',
+            text: `Cannot add more! Maximum available quantity is ${qty}`
+          };
+        }
       } else {
         state.products.push(action.payload);
+        state.cartMessage = {
+          type: 'success',
+          text: `${action.payload.name} added to cart successfully!`
+        };
       }
     },
     increaseQuantity: (state, action) => {
@@ -24,7 +57,11 @@ export const orebiSlice = createSlice({
         (item) => item.id === action.payload.id
       );
       if (item) {
-        item.quantity++;
+        // Check if increasing would exceed available stock
+        const maxQty = action.payload.maxQty || item.maxQty || 999; // Use provided max or default
+        if (item.quantity < maxQty) {
+          item.quantity++;
+        }
       }
     },
     drecreaseQuantity: (state, action) => {
@@ -45,6 +82,9 @@ export const orebiSlice = createSlice({
     resetCart: (state) => {
       state.products = [];
     },
+    clearCartMessage: (state) => {
+      state.cartMessage = null;
+    },
   },
 });
 
@@ -54,5 +94,6 @@ export const {
   drecreaseQuantity,
   deleteItem,
   resetCart,
+  clearCartMessage,
 } = orebiSlice.actions;
 export default orebiSlice.reducer;

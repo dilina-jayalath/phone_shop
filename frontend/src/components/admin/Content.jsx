@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Route, useNavigate } from "react-router-dom";
 import { logo, logoLight } from "../../assets/images";
-import { BiBookAdd, BiBookmark, BiPhone } from "react-icons/bi";
+import { BiBookAdd, BiBookmark, BiPhone, BiPackage } from "react-icons/bi";
 import { GiAutoRepair } from "react-icons/gi";
 
 
@@ -31,7 +31,7 @@ const Content = () => {
     {
       title: "REPAIRS",
       link: "/admin/repairs",
-      icon:GiAutoRepair,
+      icon: GiAutoRepair,
       whiteIcon: "icons.whitehome",
     },
     {
@@ -39,6 +39,12 @@ const Content = () => {
       link: "/admin/products",
       icon: BiBookAdd,
       whiteIcon: "icons.whiteharvest",
+    },
+    {
+      title: "STOCK",
+      link: "/admin/stock",
+      icon: BiPackage,
+      whiteIcon: "icons.whitestock",
     },
     {
       title: "ORDERS",

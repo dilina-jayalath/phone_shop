@@ -11,6 +11,19 @@ const imagePath = "http://localhost/api/products/";
 
 const ItemCard = ({ item }) => {
   const dispatch = useDispatch();
+  
+  const handleIncreaseQuantity = () => {
+    const maxQty = item.maxQty || 999;
+    if (item.quantity >= maxQty) {
+      alert(`Cannot add more. Only ${maxQty} items available in stock.`);
+      return;
+    }
+    dispatch(increaseQuantity({ 
+      id: item.id, 
+      maxQty: maxQty 
+    }));
+  };
+  
   return (
     <div className="w-full grid grid-cols-5 mb-4 border py-2">
       <div className="flex col-span-5 mdl:col-span-2 items-center gap-4 ml-4">
@@ -34,8 +47,10 @@ const ItemCard = ({ item }) => {
           </span>
           <p>{item.quantity}</p>
           <span
-            onClick={() => dispatch(increaseQuantity({ id: item.id }))}
-            className="w-6 h-6 bg-gray-100 text-2xl flex items-center justify-center hover:bg-gray-300 cursor-pointer duration-300 border-[1px] border-gray-300 hover:border-gray-300"
+            onClick={handleIncreaseQuantity}
+            className={`w-6 h-6 bg-gray-100 text-2xl flex items-center justify-center hover:bg-gray-300 cursor-pointer duration-300 border-[1px] border-gray-300 hover:border-gray-300 ${
+              item.quantity >= (item.maxQty || 999) ? 'bg-gray-300 cursor-not-allowed' : ''
+            }`}
           >
             +
           </span>

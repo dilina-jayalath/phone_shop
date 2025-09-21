@@ -7,7 +7,8 @@ import { useDispatch } from "react-redux";
 import { signOut } from "../../redux/authSlice";
 import { resetCart } from "../../redux/orebiSlice";
 import { CgLogIn, CgLogOut } from "react-icons/cg";
-import { BsPersonBadgeFill, BsPhone } from "react-icons/bs";
+import { BsPersonBadgeFill, BsPhone, BsSearch } from "react-icons/bs";
+import { FaSearchPlus } from "react-icons/fa";
 
 const SpecialCase = () => {
   const { isSignedIn, userId } = useSelector((state) => state.auth);
@@ -54,6 +55,19 @@ const SpecialCase = () => {
         </div>
       </Link>
     </>)}
+
+      {/* Product Finder Icon - Available to everyone */}
+      <Link to="/product-finder">
+        <div className="bg-white w-16 h-[70px] rounded-md flex flex-col gap-1 text-[#33475b] justify-center items-center shadow-testShadow overflow-x-hidden group cursor-pointer">
+          <div className="flex justify-center items-center">
+            <FaSearchPlus className="text-2xl -translate-x-12 group-hover:translate-x-3 transition-transform duration-200" />
+
+            <FaSearchPlus className="text-2xl -translate-x-3 group-hover:translate-x-12 transition-transform duration-200" />
+          </div>
+          <p className="text-xs font-semibold font-titleFont">Find</p>
+        </div>
+      </Link>
+
       <Link to="/cart">
         <div className="bg-white w-16 h-[70px] rounded-md flex flex-col gap-1 text-[#33475b] justify-center items-center shadow-testShadow overflow-x-hidden group cursor-pointer relative">
           <div className="flex justify-center items-center">

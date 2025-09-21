@@ -62,11 +62,42 @@ const Cart = () => {
       return;
     }
 
+    // Check if any cart items are missing the type field (old cart items)
+    const itemsMissingType = products.filter(item => !item.type);
+    if (itemsMissingType.length > 0) {
+      console.log('Items missing type:', itemsMissingType);
+      const clearCart = window.confirm(
+        'Some items in your cart need to be refreshed. Would you like to clear your cart and re-add the items? ' +
+        'This will ensure proper inventory tracking.'
+      );
+      if (clearCart) {
+        dispatch(resetCart());
+        alert('Cart cleared. Please re-add your items - they will now have all required information.');
+        return;
+      } else {
+        alert('Order cannot be processed without proper item information. Please refresh the page and try again.');
+        return;
+      }
+    }
+
     const orderDetails = products.map((item) => ({
+      id: item.id,
       name: item.name,
       quantity: item.quantity,
       color: item.colors,
+      type: item.type,
     }));
+  
+    console.log('Cart products:', products);
+    console.log('Order details being sent:', orderDetails);
+    
+    // Final validation
+    const invalidItems = orderDetails.filter(item => !item.id || !item.quantity || !item.type);
+    if (invalidItems.length > 0) {
+      console.error('Invalid items found:', invalidItems);
+      alert('Some items are missing required information. Please refresh the page and try again.');
+      return;
+    }
   
     const orderData = {
       userId,
@@ -76,6 +107,8 @@ const Cart = () => {
       contact: contact,
     };
   
+    console.log('Complete order data:', orderData);
+  
     try {
       const response = await axios.post('http://localhost/api/orders.php', orderData, {
         headers: {
@@ -83,15 +116,23 @@ const Cart = () => {
         },
       });
       console.log('Order submitted successfully:', response.data);
-      alert('Order submitted successfully');
-      dispatch(resetCart());
+      
+      if (response.data.error) {
+        alert('Error: ' + response.data.error);
+      } else {
+        alert('Order submitted successfully and inventory updated!');
+        dispatch(resetCart());
+      }
     } catch (error) {
       if (error.response) {
         console.error('Backend responded with error:', error.response.data);
+        alert('Error: ' + (error.response.data.error || error.response.data.message || 'Unknown error'));
       } else if (error.request) {
         console.error('No response from server:', error.request);
+        alert('No response from server. Please check your connection.');
       } else {
         console.error('Error setting up request:', error.message);
+        alert('Error: ' + error.message);
       }
     }
 

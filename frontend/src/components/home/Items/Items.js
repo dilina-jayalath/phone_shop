@@ -77,7 +77,7 @@ const Phones = (props) => {
   return (
     <div className="w-full pb-16 p-5">
       <Heading heading={props.name} />
-      {products.length > 4 ? <h1></h1> :
+      {products.length < 4 ? <h1></h1> :
       <Slider {...settings}>
 
             {products.map((item) => (
@@ -91,6 +91,9 @@ const Phones = (props) => {
                   badge={item.condition}
                   des={item.description}
                   available={item.availability}
+                  availability={item.availability}
+                  qty={item.qty}
+                  type={item.type}
                 />
               </div>
             ))}

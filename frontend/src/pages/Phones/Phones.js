@@ -53,6 +53,7 @@ const Phones = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {products.map((item) => (
             <Product
+            key={item.id}
             id={item.id}
             img={item.imageName}
             productName={item.productName}
@@ -61,6 +62,9 @@ const Phones = () => {
             badge={item.condition}
             des={item.description}
             available={item.availability}
+            availability={item.availability}
+            qty={item.qty}
+            type={item.type}
           />
             ))}
           </div>}

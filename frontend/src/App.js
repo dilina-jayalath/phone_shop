@@ -29,10 +29,12 @@ import Tablets from "./pages/Tablets/Tablets";
 import Accessoris from "./pages/Accessories/Accessories";
 import About from "./pages/About/About";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
+import ProductFinder from "./pages/ProductFinder/ProductFinder";
 import Admin from "./pages/admin/Admin";
 import Welcome from "./pages/admin/Welcome";
 import OrdersTable from "./pages/admin/OrderTable";
 import ProductTable from "./pages/admin/ProductTable";
+import StockTable from "./pages/admin/StockTable";
 
 
 const Layout = () => {
@@ -64,11 +66,13 @@ const router = createBrowserRouter(
         <Route path="/tablets" element={<Tablets />}></Route>
         <Route path="/accessories" element={<Accessoris />}></Route>
         <Route path ="/about" element={<About/>}></Route>
+        <Route path="/product-finder" element={<ProductFinder />}></Route>
         <Route path="/product/:id" element={<ProductDetails />}></Route>
         <Route path="/admin" element={<Admin />}>
         <Route index element={<Welcome />}></Route>
           <Route path="/admin/repairs" element={<RepairTableAdmin />} className="z-20"></Route>
           <Route path="/admin/products" element={<ProductTable />} className="z-20"></Route>
+          <Route path="/admin/stock" element={<StockTable />} className="z-20"></Route>
           <Route path="/admin/orders" element={<OrdersTable />} className="z-20"></Route>
         </Route>
 

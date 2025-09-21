@@ -13,6 +13,7 @@ function ProductTable() {
   const [productCondition, setProductCondition] = useState("");
   const [description, setDescription] = useState("");
   const [availability, setAvailability] = useState("");
+  const [qty, setQty] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [newImagePreview, setNewImagePreview] = useState(null);
   const [items, setItems] = useState([]);
@@ -44,19 +45,42 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
       });
   };
 
-  const handleDelete = (id,table) => {
-    axios
-      .delete(
-        `http://localhost/api/delete_product.php/${id}/${table}`
-      )
-      .then(() => {
-        alert("Item deleted successfully!");
-        getItemsDB();
-        setSearchQuery(""); // Clear the search query after deletion
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
+  const handleDelete = (id, table) => {
+    // Convert singular type to plural table name (same as handleupdate)
+    const tableMap = {
+      'phone': 'phones',
+      'tablet': 'tablets', 
+      'watch': 'watches',
+      'accessory': 'accessories'
+    };
+    
+    const pluralTable = tableMap[table] || table;
+    console.log('Deleting product:', { id, originalType: table, tableToUse: pluralTable });
+    
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      axios
+        .delete(
+          `http://localhost/api/delete_product.php/${id}/${pluralTable}`
+        )
+        .then((response) => {
+          console.log('Delete response:', response.data);
+          if (response.data.error) {
+            alert("Error: " + response.data.error);
+          } else {
+            alert("Item deleted successfully!");
+            getItemsDB();
+            setSearchQuery(""); // Clear the search query after deletion
+          }
+        })
+        .catch((err) => {
+          console.error('Delete error:', err);
+          if (err.response && err.response.data) {
+            alert("Error: " + (err.response.data.error || err.response.data));
+          } else {
+            alert("Error deleting product: " + err.message);
+          }
+        });
+    }
   };
 
   const handleCancelUpdate = () => {
@@ -75,24 +99,36 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
     setImage("");
     setPrice("");
     setProductCondition("");
-    setIdSet("");
+    setIdSet(null); // Reset to null (initial state)
     setColor("");
     setImagePreview("");
     setItemType("");
     setAvailability("");
     setDescription("");
+    setQty("");
     setNewImagePreview("");
   };
 
   const handleupdate = (Id , table) => {
     clearData();
     
+    // Convert singular type to plural table name
+    const tableMap = {
+      'phone': 'phones',
+      'tablet': 'tablets', 
+      'watch': 'watches',
+      'accessory': 'accessories'
+    };
+    
+    const pluralTable = tableMap[table] || table;
+    console.log('Updating product:', { Id, originalType: table, tableToUse: pluralTable });
+    
     axios
       .get(
-        `http://localhost/api/get_product.php/${Id}/${table}`
+        `http://localhost/api/get_product.php/${Id}/${pluralTable}`
       )
       .then((res) => {
-        console.log(res.data);
+        console.log('Product data loaded:', res.data);
         const {
           id,
           productName,
@@ -102,8 +138,14 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
           price,
           description,
           color,
-          type
+          type,
+          qty
         } = res.data;
+        
+        console.log('Setting form data:', {
+          id, productName, price, description, color, condition, availability, qty, imageName
+        });
+        
         setItemId(id);
         setProductName(productName);
         setImage(null);
@@ -113,16 +155,22 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
         setColor(color);
         setAvailability(availability);
         setProductCondition(condition);
+        setQty(qty || '');
         setImagePreview(imageName);
-        setItemType(type);
+        setItemType(pluralTable); // Use plural form for updates
+        
+        console.log('Form state updated, IdSet:', id);
       })
       .catch((err) => {
-        alert(err.message);
+        console.error('Error loading product data:', err);
+        alert("Error loading product data: " + err.message);
       });
   };
 
   const sendUpdatedData = () => {
-    if (!itemId || !price || !description ) {
+    console.log('Update data:', { itemId, productName, price, description, color, productCondition, availability, qty, itemType });
+    
+    if (!itemId || !price || !description) {
       alert("Please fill in all required fields.");
       return;
     }
@@ -135,26 +183,41 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
     formData.append('color', color);
     formData.append('condition', productCondition);
     formData.append('availability', availability);
+    formData.append('qty', qty);
     formData.append('type', itemType);
   
     if (image) {
       formData.append('image', image);
     }
+
+    console.log('FormData entries:');
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ': ' + pair[1]);
+    }
   
     axios
-      .post(`http://localhost/api/update_product.php/${itemId}`, formData, {
+      .post(`http://localhost/api/update_product.php`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       })
-      .then(() => {
-        console.log(formData)
-        alert("Item updated successfully");
-        getItemsDB();
-        clearData();
+      .then((response) => {
+        console.log('Update response:', response.data);
+        if (response.data.error) {
+          alert("Error: " + response.data.error);
+        } else {
+          alert("Item updated successfully");
+          getItemsDB();
+          clearData();
+        }
       })
       .catch((err) => {
-        alert(err.message);
+        console.error('Update error:', err);
+        if (err.response && err.response.data) {
+          alert("Error: " + err.response.data.error || err.response.data);
+        } else {
+          alert("Error updating product: " + err.message);
+        }
       });
   };
 
@@ -163,7 +226,7 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
   const sendData = async (e) => {
     e.preventDefault();
 
-    if (!productName || !price || !color || !description || !image) {
+    if (!productName || !price || !color || !description || !image || !qty) {
       alert('Please fill in all required fields.');
       return;
     }
@@ -176,6 +239,7 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
     formData.append('condition', productCondition);
     formData.append('availability', availability);
     formData.append('description', description);
+    formData.append('qty', qty);
     formData.append('image', image);
 
     try {
@@ -194,6 +258,7 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
       setProductCondition('new');
       setAvailability('available');
       setDescription('');
+      setQty('');
       setImagePreview(null);
       setImage(null);
       getItemsDB();
@@ -298,7 +363,7 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
           <thead>
             <tr class="bg-gray-200 ">
 
-            {["Product Type", "Product Name", "Image", "Price", "Color" , "New Or Old",  "Availability" ,"Description" , "Update" , "Delete"] .map((head) => (
+            {["Product Type", "Product Name", "Image", "Price", "Color" , "New Or Old",  "Availability" , "Quantity", "Description" , "Update" , "Delete"] .map((head) => (
                 <th
                   key={head}
                   className="border-y border-gray-100 bg-gray-50/50 p-2"
@@ -333,6 +398,9 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
 
                 <td class="border border-gray-300 px-4 py-2">
                   {item.availability == "yes"? "Available" : "Out Of Stock"}
+                </td>
+                <td class="border border-gray-300 px-4 py-2">
+                  {item.qty || 0}
                 </td>
                 <td class="border border-gray-300 px-4 py-2">
                   {item.description	}
@@ -533,6 +601,24 @@ const statuses = ["Order Placed", "In Transit", "Out for Delivery", "Delivered"]
         <option value="yes">Available</option>
         <option value="no">Not Available</option>
       </select>
+    </div>
+  </td>
+
+  {/* Quantity */}
+  <td className="border border-gray-300 px-4 py-2">
+    <div className="mb-4">
+      <label htmlFor="qty" className="block text-m font-bold text-gray-600">
+        Quantity
+      </label>
+      <input
+        type="number"
+        id="qty"
+        name="qty"
+        min="0"
+        className="mt-1 p-2 w-full border rounded-md"
+        value={qty}
+        onChange={(e) => setQty(e.target.value)}
+      />
     </div>
   </td>
 
