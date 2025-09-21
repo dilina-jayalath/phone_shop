@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Route, useNavigate } from "react-router-dom";
 import { logo, logoLight } from "../../assets/images";
-import { BiBookAdd, BiBookmark, BiPhone, BiPackage } from "react-icons/bi";
+import { BiBookAdd, BiBookmark, BiPhone, BiPackage, BiChart } from "react-icons/bi";
 import { GiAutoRepair } from "react-icons/gi";
 
 
@@ -51,6 +51,12 @@ const Content = () => {
       link: "/admin/orders",
       icon: BiBookmark,
       whiteIcon: "icons.whitefinance",
+    },
+    {
+      title: "REPORTS",
+      link: "/admin/reports",
+      icon: BiChart,
+      whiteIcon: "icons.whitereports",
     }
   ];
 

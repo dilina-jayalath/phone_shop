@@ -35,6 +35,7 @@ import Welcome from "./pages/admin/Welcome";
 import OrdersTable from "./pages/admin/OrderTable";
 import ProductTable from "./pages/admin/ProductTable";
 import StockTable from "./pages/admin/StockTable";
+import SalesReport from "./pages/admin/SalesReport";
 
 
 const Layout = () => {
@@ -74,6 +75,7 @@ const router = createBrowserRouter(
           <Route path="/admin/products" element={<ProductTable />} className="z-20"></Route>
           <Route path="/admin/stock" element={<StockTable />} className="z-20"></Route>
           <Route path="/admin/orders" element={<OrdersTable />} className="z-20"></Route>
+          <Route path="/admin/reports" element={<SalesReport />} className="z-20"></Route>
         </Route>
 
         <Route path="*" element={<PageNotFound />} />
