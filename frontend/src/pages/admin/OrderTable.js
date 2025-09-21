@@ -94,7 +94,21 @@ export default function OrdersTable() {
                 {/* Details */}
                 <td className="p-4 border-b border-gray-200">
                   <span className="text-sm text-gray-700">
-                    {JSON.parse(order.details).map((item) => `${item.quantity}x ${item.name}`).join(", ")}
+                    {(() => {
+                      try {
+                        // Try to parse as JSON
+                        const details = JSON.parse(order.details);
+                        if (Array.isArray(details)) {
+                          return details.map((item) => `${item.quantity}x ${item.name}`).join(", ");
+                        } else {
+                          return String(order.details);
+                        }
+                      } catch (error) {
+                        // If JSON parsing fails, display the raw details as string
+                        console.warn('Failed to parse order details as JSON:', order.details, error);
+                        return String(order.details);
+                      }
+                    })()}
                   </span>
                 </td>
 
